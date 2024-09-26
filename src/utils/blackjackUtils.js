@@ -12,11 +12,12 @@ export const initializeDeck = () => {
 };
 
 const shuffle = (deck) => {
-  for (let i = deck.length - 1; i > 0; i--) {
+  const newDeck = [...deck];
+  for (let i = newDeck.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [deck[i], deck[j]] = [deck[j], deck[i]];
+    [newDeck[i], newDeck[j]] = [newDeck[j], newDeck[i]];
   }
-  return deck;
+  return newDeck;
 };
 
 export const dealCard = (deck) => {
@@ -44,4 +45,29 @@ export const calculateHandValue = (hand) => {
   }
 
   return value;
+};
+
+export const canSplit = (hand) => {
+  return hand.length === 2 && hand[0].value === hand[1].value;
+};
+
+export const canDoubleDown = (hand) => {
+  return hand.length === 2;
+};
+
+export const getCardValue = (card) => {
+  if (['K', 'Q', 'J'].includes(card.value)) return 10;
+  if (card.value === 'A') return 11;
+  return parseInt(card.value);
+};
+
+// Debounce
+export const debounce = (func, delay) => {
+  let timeout;
+  return (...args) => {
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
 };

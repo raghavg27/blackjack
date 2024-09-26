@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const CardComponent = ({ card, hidden = false, isDealer = false, index = 0 }) => {
+const CardComponent = ({ card, hidden = false, isDealer = false, index = 0, deckPosition }) => {
   const suitColor = card.suit === '♥' || card.suit === '♦' ? 'text-red-500' : 'text-black';
 
   const variants = {
@@ -11,12 +11,18 @@ const CardComponent = ({ card, hidden = false, isDealer = false, index = 0 }) =>
 
   return (
     <motion.div
-      className={`bg-white rounded-lg shadow-md w-24 h-36 m-1 flex items-center justify-center ${hidden ? 'bg-blue-500' : ''}`}
-      initial={{ x: -300, y: -200, opacity: 0 }}
+      className={`bg-white rounded-lg shadow-md w-16 h-24 sm:w-24 sm:h-36 m-1 flex items-center justify-center ${hidden ? 'bg-blue-500' : ''}`}
+      initial={{ 
+        x: deckPosition ? deckPosition.x : -300, 
+        y: deckPosition ? deckPosition.y : -200, 
+        opacity: 0 
+      }}
       animate={{ x: 0, y: 0, opacity: 1 }}
       transition={{ duration: 0.5, delay: index * 0.2 }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      role="img"
+      aria-label={hidden ? "Hidden card" : `${card.value} of ${card.suit}`}
     >
       <motion.div
         className="w-full h-full flex items-center justify-center"
@@ -26,9 +32,9 @@ const CardComponent = ({ card, hidden = false, isDealer = false, index = 0 }) =>
         transition={{ duration: 0.5 }}
       >
         {!hidden && (
-          <div className={`text-2xl font-bold ${suitColor}`}>
+          <div className={`text-xl sm:text-2xl font-bold ${suitColor}`}>
             {card.value}
-            <span className="text-4xl">{card.suit}</span>
+            <span className="text-2xl sm:text-4xl">{card.suit}</span>
           </div>
         )}
       </motion.div>
